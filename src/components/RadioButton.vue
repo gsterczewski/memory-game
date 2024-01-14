@@ -63,6 +63,7 @@ const model = defineModel();
   z-index: 99;
   display: grid;
   place-items: center;
+  text-transform: capitalize;
 }
 .radio-container:has(
     :not(.radio:checked).radio:hover,
