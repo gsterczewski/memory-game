@@ -60,7 +60,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   --color: var(--color-neutral-200);
 }
 .button--base {
-  --background: var(--color-neutral-500);
+  --background: var(--color-neutral-400);
   --color: var(--color-neutral-700);
 }
 .button--primary:hover,
