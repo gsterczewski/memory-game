@@ -1,6 +1,6 @@
 <script setup lang="ts">
 type Theme = "primary" | "base";
-type Size = "large" | "normal";
+type Size = "large" | "normal" | "large--no-scale";
 type ButtonProps = {
   theme?: Theme;
   size?: Size;
@@ -37,7 +37,8 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   --height: 2.5rem;
   --fs: 1rem;
 }
-.button--large {
+.button--large,
+.button--large--no-scale {
   --width: 17.5rem;
   --height: 3rem;
   --fs: 1.125rem;
