@@ -100,3 +100,4 @@ import { options, availableOptions } from "../state/options";
   }
 }
 </style>
+../game/options
