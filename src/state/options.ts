@@ -1,17 +1,18 @@
 import { ref, Ref } from "vue";
 
-export type GameTheme = "numbers" | "icons";
-export type GamePlayers = "1" | "2" | "3" | "4";
-export type GameGrid = "4" | "6";
+export const availableOptions = {
+  players: ["1", "2", "3", "4"],
+  theme: ["numbers", "icons"],
+  grid: ["4", "6"],
+} as const;
 
-export type GameOptions = Ref<{
-  theme: GameTheme;
-  players: GamePlayers;
-  grid: GameGrid;
-}>;
-
-export const options: GameOptions = ref({
-  theme: "numbers",
-  players: "1",
-  grid: "4",
+export type GameOptions = {
+  players: (typeof availableOptions.players)[number];
+  theme: (typeof availableOptions.theme)[number];
+  grid: (typeof availableOptions.grid)[number];
+};
+export const options: Ref<GameOptions> = ref({
+  players: availableOptions.players[0],
+  theme: availableOptions.theme[0],
+  grid: availableOptions.grid[0],
 });

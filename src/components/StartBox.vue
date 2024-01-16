@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import BaseButton from "./BaseButton.vue";
 import RadioButton from "./RadioButton.vue";
-import { options, GameTheme, GamePlayers, GameGrid } from "../state/options";
-const themes: Array<GameTheme> = ["numbers", "icons"];
-const players: Array<GamePlayers> = ["1", "2", "3", "4"];
-const grids: Array<GameGrid> = ["4", "6"];
+import { options, availableOptions } from "../state/options";
 </script>
 <template>
   <div class="box">
@@ -13,7 +10,7 @@ const grids: Array<GameGrid> = ["4", "6"];
         <legend>Select Theme</legend>
         <div class="radio-group">
           <RadioButton
-            v-for="(theme, index) in themes"
+            v-for="(theme, index) in availableOptions.theme"
             :id="`theme-${index + 1}`"
             :value="theme"
             name="theme"
@@ -27,7 +24,7 @@ const grids: Array<GameGrid> = ["4", "6"];
         <legend>Numbers Of Players</legend>
         <div class="radio-group">
           <RadioButton
-            v-for="(playersNumber, index) in players"
+            v-for="(playersNumber, index) in availableOptions.players"
             :id="`players-${index + 1}`"
             :value="playersNumber"
             name="players"
@@ -40,7 +37,7 @@ const grids: Array<GameGrid> = ["4", "6"];
         <legend>Grid Size</legend>
         <div class="radio-group">
           <RadioButton
-            v-for="(grid, index) in grids"
+            v-for="(grid, index) in availableOptions.grid"
             :id="`grid-${index + 1}`"
             :value="grid"
             name="grid"
