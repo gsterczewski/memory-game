@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import BaseButton from "./BaseButton.vue";
 import TextBar from "./TextBar.vue";
-import { GameResults } from "../game/results";
+
+type Result = {
+  caption: string;
+  text: string;
+  isWinner: boolean;
+};
+
 type GameSummaryProps = {
   title: string;
   caption: string;
-  results: GameResults[];
+  results: Result[];
   handleRestart: (...args: any[]) => void;
   handleStartNewGame: (...args: any[]) => void;
 };
