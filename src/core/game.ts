@@ -46,7 +46,8 @@ function timer(): Timer {
 }
 
 function singlePlayerGame(grid: GridSize, testMode: boolean) {
-  const board = reactive(createBoard(grid, testMode));
+  const gameBoard = createBoard(grid, testMode);
+  const board = reactive(gameBoard.getBoard());
   const tilesToMatch = grid / 2;
   let movesMade = ref(0);
   let matchedTiles = ref(0);
@@ -96,6 +97,12 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
     }
   };
   const isGameOver = () => matchedTiles.value === tilesToMatch;
+  const restart = () => {
+    clock.reset();
+    gameBoard.reset();
+    movesMade.value = 0;
+    matchedTiles.value = 0;
+  };
   return {
     board,
     getMatchedTiles: () => matchedTiles.value,
@@ -103,6 +110,7 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
     flipTile,
     isGameOver,
     getTime: () => clock.getTime(),
+    restart,
   };
 }
 export function createGame(options?: GameOptions) {
