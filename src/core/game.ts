@@ -53,6 +53,7 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
   let matchedTiles = ref(0);
   let flippedTile: Tile | null = null;
   const clock = timer();
+  let isInMove = false;
 
   const getTile = (tileIndex: number) => board[tileIndex];
   const tilesMatch = (tile1: Tile, tile2: Tile): boolean =>
@@ -72,13 +73,14 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
     tile2.isFlipped = false;
   };
   const flipTile = (tileIndex: number): void => {
+    if (isInMove) return;
     if (!clock.hasStarted()) {
       clock.start();
     }
     const tile = getTile(tileIndex);
+    if (tile.isMatched) return;
     tile.isFlipped = true;
 
-    if (tile.isMatched) return;
     if (flippedTile) {
       incrementMoves();
       if (tilesMatch(tile, flippedTile)) {
@@ -88,10 +90,19 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
         if (isGameOver()) {
           clock.stop();
         }
-      } else {
-        markTilesAsNotFlipped(flippedTile, tile);
       }
-      flippedTile = null;
+      /* skip timeout in tests*/
+      if (testMode) {
+        markTilesAsNotFlipped(flippedTile!, tile);
+        flippedTile = null;
+      } else {
+        isInMove = true;
+        setTimeout(() => {
+          markTilesAsNotFlipped(flippedTile!, tile);
+          flippedTile = null;
+          isInMove = false;
+        }, 1000);
+      }
     } else {
       flippedTile = tile;
     }
