@@ -1,6 +1,6 @@
 import { GameOptions, GridSize, Tile } from "./types";
 import { createBoard } from "./board";
-
+import { ref, reactive } from "vue";
 export const defaultOptions: GameOptions = {
   players: 1,
   grid: 16,
@@ -17,11 +17,11 @@ interface Timer {
 }
 
 function timer(): Timer {
-  let time = 0;
+  let time = ref(0);
   let interval = 0;
   let hasStarted = false;
   const incrementTime = () => {
-    time++;
+    time.value++;
   };
   const start = () => {
     interval = setInterval(incrementTime, 1000);
@@ -31,11 +31,11 @@ function timer(): Timer {
     clearInterval(interval);
   };
   const reset = () => {
-    time = 0;
+    time.value = 0;
     hasStarted = false;
     clearInterval(interval);
   };
-  const getTime = () => time;
+  const getTime = () => time.value;
   return {
     getTime,
     start,
@@ -46,10 +46,10 @@ function timer(): Timer {
 }
 
 function singlePlayerGame(grid: GridSize, testMode: boolean) {
-  const board = createBoard(grid, testMode);
+  const board = reactive(createBoard(grid, testMode));
   const tilesToMatch = grid / 2;
-  let movesMade = 0;
-  let matchedTiles = 0;
+  let movesMade = ref(0);
+  let matchedTiles = ref(0);
   let flippedTile: Tile | null = null;
   const clock = timer();
 
@@ -57,10 +57,10 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
   const tilesMatch = (tile1: Tile, tile2: Tile): boolean =>
     tile1.value === tile2.value;
   const incrementMoves = () => {
-    movesMade += 1;
+    movesMade.value += 1;
   };
   const incrementScore = () => {
-    matchedTiles++;
+    matchedTiles.value++;
   };
   const markTilesAsMatched = (tile1: Tile, tile2: Tile) => {
     tile1.isMatched = true;
@@ -95,11 +95,11 @@ function singlePlayerGame(grid: GridSize, testMode: boolean) {
       flippedTile = tile;
     }
   };
-  const isGameOver = () => matchedTiles === tilesToMatch;
+  const isGameOver = () => matchedTiles.value === tilesToMatch;
   return {
     board,
-    getMatchedTiles: () => matchedTiles,
-    getMovesMade: () => movesMade,
+    getMatchedTiles: () => matchedTiles.value,
+    getMovesMade: () => movesMade.value,
     flipTile,
     isGameOver,
     getTime: () => clock.getTime(),
