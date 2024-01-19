@@ -4,7 +4,11 @@ export type Tile = {
   isFlipped: boolean;
   isMatched: boolean;
 };
-export type GameBoard = Tile[];
+
+export type GameBoard = {
+  getBoard(): Tile[];
+  reset(): void;
+};
 
 export type GridSize = 16 | 36;
 export type TileTheme = "numbers" | "icons";
