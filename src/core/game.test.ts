@@ -25,7 +25,27 @@ describe("Single player game", () => {
       expect(values2).not.toEqual(values1);
     });
   });
-
+  describe("game control", () => {
+    test("player can restart the game with current settings", () => {
+      const game = createTestGame(16);
+      const tilesToMatch = [0, 8, 1, 9];
+      tilesToMatch.forEach((tile) => {
+        game.flipTile(tile);
+      });
+      tilesToMatch.forEach((tile) => {
+        expect(game.board[tile].isMatched).toBe(true);
+      });
+      expect(game.getMovesMade()).toEqual(2);
+      expect(game.getMatchedTiles()).toEqual(2);
+      game.restart();
+      expect(game.getMovesMade()).toEqual(0);
+      expect(game.getMatchedTiles()).toEqual(0);
+      game.board.forEach((tile) => {
+        expect(tile.isFlipped).toBe(false);
+        expect(tile.isMatched).toBe(false);
+      });
+    });
+  });
   describe("game score", () => {
     test("player can see current moves made", () => {
       const game = createTestGame(16);
