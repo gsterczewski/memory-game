@@ -5,7 +5,7 @@ type Props = {
   name: string;
   id: string;
   label: string;
-  value: String;
+  value: number | string;
 };
 withDefaults(defineProps<Props>(), {
   size: "normal",
