@@ -1,10 +1,13 @@
-import { GridSize, Tile } from "./types";
+import { GridSize, SinglePlayerGame, Tile } from "./types";
 import { createBoard } from "./board";
 import { ref, reactive } from "vue";
 import timer from "../lib/timer";
 import delayed from "../lib/delayed";
 
-export default function singlePlayerGame(grid: GridSize, testMode: boolean) {
+export default function singlePlayerGame(
+  grid: GridSize,
+  testMode: boolean
+): SinglePlayerGame {
   const gameBoard = createBoard(grid, testMode);
   const board = reactive(gameBoard.getBoard());
   const tilesToMatch = grid / 2;

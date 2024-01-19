@@ -20,3 +20,13 @@ export type GameOptions = {
   theme: TileTheme;
   testMode: boolean;
 };
+
+export type SinglePlayerGame = {
+  board: Tile[];
+  getMatchedTiles(): number;
+  getMovesMade(): number;
+  flipTile(index: number): void;
+  isGameOver(): boolean;
+  getTime(): number;
+  restart(): void;
+};
