@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import BaseButton from "./BaseButton.vue";
 import RadioButton from "./RadioButton.vue";
-import { options, availableOptions } from "../state/options";
+import { options } from "../core/options";
+/**
+ * @todo use some existing type here
+ * @todo it should be a prop
+ */
+const availableOptions = {
+  players: [1, 2, 3, 4],
+  theme: ["numbers", "icons"],
+  grid: [16, 36],
+};
+type StartBoxProps = {
+  handleStartGame(): void;
+};
+defineProps<StartBoxProps>();
 </script>
 <template>
   <div class="box">
@@ -28,7 +41,7 @@ import { options, availableOptions } from "../state/options";
             :id="`players-${index + 1}`"
             :value="playersNumber"
             name="players"
-            :label="playersNumber"
+            :label="`${playersNumber}`"
             v-model="options.players"
           />
         </div>
@@ -41,14 +54,16 @@ import { options, availableOptions } from "../state/options";
             :id="`grid-${index + 1}`"
             :value="grid"
             name="grid"
-            :label="`${grid}x${grid}`"
+            :label="`${Math.sqrt(grid)}x${Math.sqrt(grid)}`"
             v-model="options.grid"
             size="large"
           />
         </div>
       </fieldset>
       <div class="row-4">
-        <BaseButton size="large" theme="primary">Start Game</BaseButton>
+        <BaseButton size="large" theme="primary" @click="handleStartGame"
+          >Start Game</BaseButton
+        >
       </div>
     </div>
   </div>
