@@ -30,3 +30,5 @@ export type SinglePlayerGame = {
   getTime(): number;
   restart(): void;
 };
+export type MultiplayerGame = {};
+export type Game = SinglePlayerGame | MultiplayerGame;
