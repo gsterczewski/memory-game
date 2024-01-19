@@ -6,6 +6,7 @@ const createTile = (id: string, value: number): Tile => ({
   isFlipped: false,
   isMatched: false,
 });
+
 function shuffleArray(arr: any[]) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -24,5 +25,13 @@ export function createBoard(size: number, isSorted = false): GameBoard {
   if (!isSorted) {
     shuffleArray(board);
   }
-  return board;
+  const reset = () => {
+    board.map((tile) => {
+      (tile.isFlipped = false), (tile.isMatched = false);
+    });
+  };
+  return {
+    getBoard: () => board,
+    reset,
+  };
 }
