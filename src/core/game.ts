@@ -1,49 +1,14 @@
 import { GameOptions, GridSize, Tile } from "./types";
 import { createBoard } from "./board";
 import { ref, reactive } from "vue";
+import timer from "./timer";
+
 export const defaultOptions: GameOptions = {
   players: 1,
   grid: 16,
   theme: "numbers",
   testMode: false,
 };
-
-interface Timer {
-  start(): void;
-  stop(): void;
-  getTime(): number;
-  reset(): void;
-  hasStarted(): boolean;
-}
-
-function timer(): Timer {
-  let time = ref(0);
-  let interval = 0;
-  let hasStarted = false;
-  const incrementTime = () => {
-    time.value++;
-  };
-  const start = () => {
-    interval = setInterval(incrementTime, 1000);
-    hasStarted = true;
-  };
-  const stop = () => {
-    clearInterval(interval);
-  };
-  const reset = () => {
-    time.value = 0;
-    hasStarted = false;
-    clearInterval(interval);
-  };
-  const getTime = () => time.value;
-  return {
-    getTime,
-    start,
-    stop,
-    reset,
-    hasStarted: () => hasStarted,
-  };
-}
 
 function singlePlayerGame(grid: GridSize, testMode: boolean) {
   const gameBoard = createBoard(grid, testMode);
