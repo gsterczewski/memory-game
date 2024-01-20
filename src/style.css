@@ -1,5 +1,4 @@
 :root {
-  font-family: "Atkinson Hyperlegible", sans-serif;
   --color-neutral-200: #fcfcfc;
   --color-neutral-300: #f3f3f3;
   --color-neutral-400: #dfe7ec;
@@ -73,4 +72,7 @@ svg {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+body {
+  font-family: "Atkinson Hyperlegible", sans-serif;
 }
