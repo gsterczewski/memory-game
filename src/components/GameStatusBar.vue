@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed } from "vue";
 type StatusBarProps = {
-  scores: number[];
+  scores?: number[];
   time: number;
   moves: number;
   playerTurn: number;
+  players: number;
 };
-const props = defineProps<StatusBarProps>();
-const players = computed(() => props.scores.length);
+defineProps<StatusBarProps>();
 </script>
 <template>
   <div v-if="players === 1" class="status-bar">
