@@ -74,6 +74,7 @@ defineProps<StartBoxProps>();
   background-color: var(--color-neutral-200);
   display: grid;
   place-items: center;
+  border-radius: 0.75rem;
 }
 .container {
   --row-gap: 1.5rem;
