@@ -70,7 +70,7 @@ defineProps<StartBoxProps>();
 </template>
 <style scoped>
 .box {
-  padding: 6.4vw;
+  padding: min(6.4vw, 3.5rem);
   background-color: var(--color-neutral-200);
   display: grid;
   place-items: center;
