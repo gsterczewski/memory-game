@@ -1,6 +1,6 @@
 <script setup lang="ts">
 type Theme = "primary" | "base";
-type Size = "large" | "normal" | "large--no-scale";
+type Size = "large" | "normal" | "large--no-scale" | "block";
 type ButtonProps = {
   theme?: Theme;
   size?: Size;
@@ -42,6 +42,11 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   --width: 17.5rem;
   --height: 3rem;
   --fs: 1.125rem;
+}
+.button--block {
+  width: 100%;
+  aspect-ratio: 5.8/1;
+  font-size: inherit;
 }
 @media (min-width: 48em) {
   .button--large {
