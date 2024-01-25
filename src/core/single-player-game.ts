@@ -1,20 +1,20 @@
-import { Counter } from "../lib/counter";
 import { Timer } from "../lib/timer";
 import { Game, GameOptions, SPGameResults } from "./game";
 import { Tile } from "./tile";
+import { Player } from "./player";
 import delayed from "../lib/delayed";
 
 export class SinglePlayerGame extends Game {
   private readonly MS_IN_SECOND = 1000;
   private timer: Timer;
-  private moves = new Counter();
   private previousTile: Tile | undefined;
-  private matchedTiles = new Counter();
+  private player: Player;
   private tilesToMatch: number;
   constructor(options: GameOptions) {
     super(options);
     this.timer = new Timer();
     this.tilesToMatch = options.boardSize / 2;
+    this.player = new Player("player-1");
   }
   private start(): void {
     this.timer.start();
@@ -25,16 +25,14 @@ export class SinglePlayerGame extends Game {
     this.setGameAsOver();
   }
   private incrementMoves() {
-    this.moves.increment();
+    this.player.incrementMoves();
   }
-  private incrementMatchedTiles() {
-    this.matchedTiles.increment();
-  }
+
   private areAllTilesMatched(): boolean {
-    return this.matchedTiles.count === this.tilesToMatch;
+    return this.player.getScore() === this.tilesToMatch;
   }
   private handleMatchedTiles(tile1: Tile, tile2: Tile) {
-    this.incrementMatchedTiles();
+    this.player.incrementScore();
     tile1.markAsMatched();
     tile2.markAsMatched();
     tile1.markAsNotFlipped();
@@ -85,25 +83,24 @@ export class SinglePlayerGame extends Game {
   }
 
   public getMoves() {
-    return this.moves.getCount();
+    return this.player.getMoves();
   }
   public getTime() {
     return this.timer.getTime();
   }
   public getMatchedTiles(): number {
-    return this.matchedTiles.count;
+    return this.player.getScore();
   }
   public reset(): void {
-    this.matchedTiles.reset();
     this.timer.reset();
-    this.moves.reset();
+    this.player.reset();
     this.isOver = false;
   }
 
   public getResults(): SPGameResults {
     return Object.freeze({
       time: this.getTime(),
-      moves: this.getMoves(),
+      moves: this.player.getMoves(),
     });
   }
 }
