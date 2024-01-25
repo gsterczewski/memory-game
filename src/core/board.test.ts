@@ -22,9 +22,11 @@ describe("GameBoard", () => {
     expect(values1).not.toEqual(order);
     expect(values2).not.toEqual(values1);
   });
-  test("GameBoard.getTiles() returns all tiles", () => {
-    const tiles = new GameBoard(16).getTiles();
-    expect(tiles.length).toEqual(16);
+  test("GameBoard.getTiles() returns array with correct number of tiles", () => {
+    const tiles16 = new GameBoard(16).getTiles();
+    const tiles36 = new GameBoard(36).getTiles();
+    expect(tiles16.length).toEqual(16);
+    expect(tiles36.length).toEqual(36);
   });
   test("GameBoard.getTile(index) returns correct tile", () => {
     const board = new GameBoard(16);
