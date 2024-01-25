@@ -50,13 +50,15 @@ export class SinglePlayerGame extends Game {
     this.previousTile = undefined;
   }
 
-  public selectTile(tileIndex: number) {
+  public selectTile(tileIndex: number): Tile | undefined {
+    if (tileIndex < 0 || tileIndex > this.getBoard().length - 1) return;
     if (this.isGameLocked) return;
     if (!this.isGameStarted) {
       this.start();
     }
 
     const tile = this.getTile(tileIndex);
+    if (this.previousTile?.getID() === tile.getID()) return;
     if (tile.isMatched) return;
 
     tile.markAsFlipped();
@@ -79,6 +81,7 @@ export class SinglePlayerGame extends Game {
     } else {
       this.previousTile = tile;
     }
+    return tile;
   }
 
   public getMoves() {
