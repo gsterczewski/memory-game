@@ -1,37 +1,30 @@
-import { ref } from "vue";
-interface Timer {
-  start(): void;
-  stop(): void;
-  getTime(): number;
-  reset(): void;
-  hasStarted(): boolean;
-}
+import { Counter } from "./counter";
 
-export default function timer(): Timer {
-  let time = ref(0);
-  let interval = 0;
-  let hasStarted = false;
-  const incrementTime = () => {
-    time.value++;
-  };
-  const start = () => {
-    interval = setInterval(incrementTime, 1000);
-    hasStarted = true;
-  };
-  const stop = () => {
-    clearInterval(interval);
-  };
-  const reset = () => {
-    time.value = 0;
-    hasStarted = false;
-    clearInterval(interval);
-  };
-  const getTime = () => time.value;
-  return {
-    getTime,
-    start,
-    stop,
-    reset,
-    hasStarted: () => hasStarted,
-  };
+export class Timer {
+  private counter: Counter;
+  private interval = 0;
+  constructor() {
+    this.counter = new Counter();
+  }
+  // private formatTime(seconds: number): string {
+  //   const SECONDS_IN_MINUTE = 15;
+  //   const prependZero = (sec: number) => `0${sec}`;
+  //   let sec = seconds % SECONDS_IN_MINUTE;
+  //   let min = Math.floor(seconds / SECONDS_IN_MINUTE);
+  //   return `${min}:${sec <= 9 ? prependZero(sec) : sec}`;
+  // }
+  public start(): void {
+    this.interval = setInterval(() => this.counter.increment(), 1000);
+  }
+  public stop(): void {
+    clearInterval(this.interval);
+  }
+  public getTime(): number {
+    return this.counter.getCount();
+    // return this.formatTime(this.counter.getCount());
+  }
+  public reset(): void {
+    this.stop();
+    this.counter.reset();
+  }
 }
