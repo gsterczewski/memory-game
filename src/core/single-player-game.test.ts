@@ -20,6 +20,11 @@ let game36Ordered: SinglePlayerGame;
 let game16Random: SinglePlayerGame;
 let game36Random: SinglePlayerGame;
 
+function selectTiles(tiles: number[], game: SinglePlayerGame): void {
+  tiles.forEach((tile) => {
+    game.selectTile(tile);
+  });
+}
 beforeEach(() => {
   game16Ordered = createGame(testOptions) as SinglePlayerGame;
   game36Ordered = createGame({
@@ -207,6 +212,43 @@ describe("SinglePlayerGame", () => {
         game16Ordered.selectTile(tile);
       });
       expect(game16Ordered.isOver()).toEqual(true);
+    });
+  });
+  describe("reset()", () => {
+    test("sets matched tiles to 0", () => {
+      selectTiles([0, 8, 5, 13], game16Ordered);
+      expect(game16Ordered.getMatchedTiles()).toEqual(2);
+
+      game16Ordered.reset();
+      expect(game16Ordered.getMatchedTiles()).toEqual(0);
+    });
+    test("sets moves to 0", () => {
+      selectTiles([0, 8, 5, 13, 1, 3, 7], game16Ordered);
+      expect(game16Ordered.getMoves()).toEqual(3);
+
+      game16Ordered.reset();
+      expect(game16Ordered.getMoves()).toEqual(0);
+    });
+    test("sets time to 0", async () => {
+      game16Ordered.selectTile(0);
+      await sleep(1000);
+      expect(game16Ordered.getTime()).toBeGreaterThan(0);
+      game16Ordered.reset();
+      expect(game16Ordered.getTime()).toEqual(0);
+    });
+    test("resets board to initial state", () => {
+      selectTiles([0, 8, 5, 13, 1, 3, 7], game16Ordered);
+      expect(
+        game16Ordered
+          .getBoard()
+          .some((tile) => tile.isMatched || tile.isFlipped)
+      ).toEqual(true);
+      game16Ordered.reset();
+      expect(
+        game16Ordered
+          .getBoard()
+          .some((tile) => tile.isMatched || tile.isFlipped)
+      ).toEqual(false);
     });
   });
 });
