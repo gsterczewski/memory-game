@@ -12,7 +12,7 @@ const testOptions: GameOptions = {
   boardSize: 16,
   theme: "numbers",
   order: "sequential",
-  gameSpeed: 0,
+  gameDelay: 0,
 };
 
 let game16Ordered: SinglePlayerGame;

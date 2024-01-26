@@ -6,7 +6,7 @@ export const gameOptions = {
   theme: ["numbers", "icons"],
   boardSize: [16, 36],
   order: ["random", "sequential"],
-  gameSpeed: [0, 1, 2],
+  gameDelay: [0, 1, 2],
 } as const;
 
 export const defaultOptions: GameOptions = {
@@ -14,7 +14,7 @@ export const defaultOptions: GameOptions = {
   theme: "numbers",
   boardSize: 16,
   order: "random",
-  gameSpeed: 1,
+  gameDelay: 1,
 };
 
 export type GameOptions = {
@@ -37,10 +37,10 @@ export abstract class Game {
   } as const;
 
   protected currentGameStatus: keyof typeof this.GAME_STATUS;
-  protected gameSpeed: number;
+  protected gameDelay: number;
   constructor(options: GameOptions) {
     this.board = new GameBoard(options.boardSize);
-    this.gameSpeed = options.gameSpeed;
+    this.gameDelay = options.gameDelay;
     this.currentGameStatus = this.GAME_STATUS.NOT_STARTED;
     if (options.order === "random") {
       this.board.shuffle();
