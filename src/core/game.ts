@@ -29,12 +29,18 @@ export type SPGameResults = {
 export abstract class Game {
   private board: GameBoard;
   protected isGameLocked = false;
-  protected isGameStarted = false;
-  public isOver = false;
+  protected GAME_STATUS = {
+    NOT_STARTED: "NOT_STARTED",
+    STARTED: "STARTED",
+    FINISHED: "FINISHED",
+  } as const;
+
+  protected currentGameStatus: keyof typeof this.GAME_STATUS;
   protected gameSpeed: number;
   constructor(options: GameOptions) {
     this.board = new GameBoard(options.boardSize);
     this.gameSpeed = options.gameSpeed;
+    this.currentGameStatus = this.GAME_STATUS.NOT_STARTED;
     if (options.order === "random") {
       this.board.shuffle();
     }
@@ -51,13 +57,25 @@ export abstract class Game {
   protected unlockGame() {
     this.isGameLocked = false;
   }
-  protected setGameAsOver() {
-    this.isOver = true;
+  protected setGameStatus(status: keyof typeof this.GAME_STATUS) {
+    this.currentGameStatus = status;
   }
-  protected setGameAsNotOver() {
-    this.isOver = false;
+  protected start(cb?: () => void) {
+    this.setGameStatus(this.GAME_STATUS.STARTED);
+    if (cb) {
+      cb();
+    }
+  }
+  protected stop(cb?: () => void) {
+    this.setGameStatus(this.GAME_STATUS.FINISHED);
+    if (cb) {
+      cb();
+    }
   }
   public getBoard(): GameBoard["tiles"] {
     return this.board.getTiles();
+  }
+  public isOver(): boolean {
+    return this.currentGameStatus === this.GAME_STATUS.FINISHED;
   }
 }

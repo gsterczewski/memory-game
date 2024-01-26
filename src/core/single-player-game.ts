@@ -16,14 +16,7 @@ export class SinglePlayerGame extends Game {
     this.tilesToMatch = options.boardSize / 2;
     this.player = new Player("player-1");
   }
-  private start(): void {
-    this.timer.start();
-    this.isGameStarted = true;
-  }
-  private stop(): void {
-    this.timer.stop();
-    this.setGameAsOver();
-  }
+
   private incrementMoves() {
     this.player.incrementMoves();
   }
@@ -39,7 +32,9 @@ export class SinglePlayerGame extends Game {
     tile2.markAsNotFlipped();
     this.previousTile = undefined;
     if (this.areAllTilesMatched()) {
-      this.stop();
+      this.stop(() => {
+        this.timer.stop();
+      });
     }
   }
   private handleMismatchedTiles(tile1: Tile, tile2: Tile) {
@@ -51,8 +46,10 @@ export class SinglePlayerGame extends Game {
   public selectTile(tileIndex: number): Tile | undefined {
     if (tileIndex < 0 || tileIndex > this.getBoard().length - 1) return;
     if (this.isGameLocked) return;
-    if (!this.isGameStarted) {
-      this.start();
+    if (this.currentGameStatus !== this.GAME_STATUS.STARTED) {
+      this.start(() => {
+        this.timer.start();
+      });
     }
 
     const tile = this.getTile(tileIndex);
@@ -94,7 +91,7 @@ export class SinglePlayerGame extends Game {
   public reset(): void {
     this.timer.reset();
     this.player.reset();
-    this.isOver = false;
+    this.setGameStatus(this.GAME_STATUS.NOT_STARTED);
   }
 
   public getResults(): SPGameResults {
