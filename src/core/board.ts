@@ -73,4 +73,10 @@ export class GameBoard {
       this.tiles[i] = temp;
     }
   }
+  public reset(): void {
+    this.tiles.forEach((tile) => {
+      tile.markAsNotFlipped();
+      tile.markAsNotMatched();
+    });
+  }
 }
