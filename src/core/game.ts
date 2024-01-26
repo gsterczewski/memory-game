@@ -26,8 +26,9 @@ export type SPGameResults = {
   time: number;
 };
 
+type Callback = () => void;
 export abstract class Game {
-  private board: GameBoard;
+  protected board: GameBoard;
   protected isGameLocked = false;
   protected GAME_STATUS = {
     NOT_STARTED: "NOT_STARTED",
@@ -60,18 +61,19 @@ export abstract class Game {
   protected setGameStatus(status: keyof typeof this.GAME_STATUS) {
     this.currentGameStatus = status;
   }
-  protected start(cb?: () => void) {
+  protected start(cb?: Callback) {
     this.setGameStatus(this.GAME_STATUS.STARTED);
     if (cb) {
       cb();
     }
   }
-  protected stop(cb?: () => void) {
+  protected stop(cb?: Callback) {
     this.setGameStatus(this.GAME_STATUS.FINISHED);
     if (cb) {
       cb();
     }
   }
+
   public getBoard(): GameBoard["tiles"] {
     return this.board.getTiles();
   }
