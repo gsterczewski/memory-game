@@ -191,4 +191,22 @@ describe("SinglePlayerGame", () => {
       expect(game16Ordered.getMatchedTiles()).toEqual(1);
     });
   });
+  describe("isOver()", () => {
+    test("returns false when not all tiles are matched", () => {
+      const tilesToFlip = [0, 8, 2, 9, 3, 10, 4, 15, 6, 13];
+      tilesToFlip.forEach((tile) => {
+        game16Ordered.selectTile(tile);
+      });
+      expect(game16Ordered.isOver()).toEqual(false);
+    });
+    test("returns true when all tiles are matched", () => {
+      const tilesToFlip = [
+        0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15,
+      ];
+      tilesToFlip.forEach((tile) => {
+        game16Ordered.selectTile(tile);
+      });
+      expect(game16Ordered.isOver()).toEqual(true);
+    });
+  });
 });
