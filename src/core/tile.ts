@@ -11,6 +11,9 @@ export class Tile {
   markAsMatched() {
     this.isMatched = true;
   }
+  markAsNotMatched() {
+    this.isMatched = false;
+  }
   getValue() {
     return this.value;
   }
