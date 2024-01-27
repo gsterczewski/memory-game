@@ -54,11 +54,11 @@ describe("multiplayer game", () => {
       });
       test("after 1 move, returns id of player 2", async () => {
         await selectTilesAsync([0, 1], game3);
-        expect(game3.getActivePlayerID()).toEqual("player-1");
+        expect(game3.getActivePlayerID()).toEqual("player-2");
       });
       test("after 2 moves, returns id of player 3", async () => {
         await selectTilesAsync([0, 1, 2, 3], game3);
-        expect(game3.getActivePlayerID()).toEqual("player-2");
+        expect(game3.getActivePlayerID()).toEqual("player-3");
       });
       test("after 6 moves, returns id of player 1", async () => {
         await selectTilesAsync([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], game3);
@@ -73,7 +73,7 @@ describe("multiplayer game", () => {
       });
       test("after 8 moves, returns id of player 3", async () => {
         await selectTilesAsync(
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
           game3
         );
         expect(game3.getActivePlayerID()).toEqual("player-3");
@@ -129,10 +129,10 @@ describe("multiplayer game", () => {
     });
   });
   describe("getScores()", () => {
-    test("when game has not yet started, it should return n-sized array of 0's, where n = number of players", () => {
+    test("when game has not yet started, returns n-sized array of 0's, where n = number of players", () => {
       expect(game4.getScores()).toEqual([0, 0, 0, 0]);
     });
-    test("when game has started, it should return n-sized array of numbers equal to each player score ", async () => {
+    test("when game has started, returns n-sized array of numbers equal to each player score ", async () => {
       await selectTilesAsync([0, 8], game4);
       expect(game4.getScores()).toEqual([1, 0, 0, 0]);
       await selectTilesAsync([1, 9], game4);
@@ -149,9 +149,51 @@ describe("multiplayer game", () => {
       expect(game4.getScores()).toEqual([2, 1, 2, 1]);
     });
   });
+  describe("isOver", () => {
+    test("when the game has not started returns false", () => {
+      expect(game2.isOver()).toEqual(false);
+      expect(game3.isOver()).toEqual(false);
+      expect(game4.isOver()).toEqual(false);
+    });
+    test("when not all tiles are matched returns false", async () => {
+      await selectTilesAsync(
+        [0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14],
+        game4
+      );
+      expect(game4.isOver()).toEqual(false);
+    });
+    test("when  all tiles are matched returns true", async () => {
+      await selectTilesAsync(
+        [0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15],
+        game4
+      );
+      expect(game4.isOver()).toEqual(true);
+    });
+  });
   describe("reset()", () => {
-    test.todo("it should reset game board to initial state", () => {});
-    test.todo("it should reset scores to initial state", () => {});
-    test.todo("it should reset current turn to initial state", () => {});
+    test("it should reset game board to initial state", async () => {
+      await selectTilesAsync(
+        [0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 15],
+        game4
+      );
+      game4.reset();
+      expect(game4.getBoard().some((tile) => tile.isMatched)).toEqual(false);
+      expect(game4.getBoard().some((tile) => tile.isFlipped)).toEqual(false);
+    });
+    test("it should reset scores to initial state", async () => {
+      await selectTilesAsync(
+        [0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 15],
+        game4
+      );
+      expect(game4.getScores().some((score) => score > 0)).toEqual(true);
+      game4.reset();
+      expect(game4.getScores().some((score) => score > 0)).toEqual(false);
+    });
+    test("it should reset current turn to initial state", async () => {
+      await selectTilesAsync([0, 8], game2);
+      expect(game2.getActivePlayerID()).toEqual("player-2");
+      game2.reset();
+      expect(game2.getActivePlayerID()).toEqual("player-1");
+    });
   });
 });
