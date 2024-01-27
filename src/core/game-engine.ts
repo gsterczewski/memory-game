@@ -41,7 +41,9 @@ export class GameEngine {
       return Promise.resolve({ score: 0, moves: 1 });
     });
   }
+
   public async setTile(tile: Tile): Promise<RoundResult> {
+    if (tile.isMatched) return Promise.resolve({ moves: 0, score: 0 });
     this.flipTile(tile);
     if (this.firstTile) {
       this.secondTile = tile;
