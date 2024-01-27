@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, expect } from "vitest";
-import { GameEngine } from "./game-engine";
-import { Tile } from "./tile";
+import { GameEngine } from "../game-engine";
+import { Tile } from "../tile";
 
 let engine: GameEngine;
 let tile1: Tile;

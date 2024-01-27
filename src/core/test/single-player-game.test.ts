@@ -1,11 +1,8 @@
 import { expect, test, describe, beforeEach } from "vitest";
-
-import { GameOptions } from "./game";
-import { createGame } from "./createGame";
-import { SinglePlayerGame } from "./single-player-game";
-
-const sleep = (time: number) =>
-  new Promise((resolve) => setTimeout(resolve, time));
+import { selectTilesAsync, sleep } from "./helpers";
+import { GameOptions } from "../game";
+import { createGame } from "../createGame";
+import { SinglePlayerGame } from "../single-player-game";
 
 const testOptions: GameOptions = {
   players: 1,
@@ -20,11 +17,6 @@ let game36Ordered: SinglePlayerGame;
 let game16Random: SinglePlayerGame;
 let game36Random: SinglePlayerGame;
 
-async function selectTilesAsync(tiles: number[], game: SinglePlayerGame) {
-  for (const index of tiles) {
-    await game.selectTile(index);
-  }
-}
 beforeEach(() => {
   game16Ordered = createGame(testOptions) as SinglePlayerGame;
   game36Ordered = createGame({

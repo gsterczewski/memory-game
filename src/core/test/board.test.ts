@@ -1,5 +1,5 @@
 import { expect, test, describe, beforeEach } from "vitest";
-import { GameBoard } from "./board";
+import { GameBoard } from "../board";
 
 let board16: GameBoard;
 let board36: GameBoard;
