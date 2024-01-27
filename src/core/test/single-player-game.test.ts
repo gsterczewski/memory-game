@@ -101,24 +101,24 @@ describe("SinglePlayerGame", () => {
       expect(game16Random.getMoves()).toEqual(2);
     });
   });
-  describe("getMatchedTiles()", () => {
+  describe("getScores()", () => {
     test("after 0 calls to selectTile(), returns 0", () => {
-      expect(game16Random.getMatchedTiles()).toEqual(0);
+      expect(game16Random.getScores()[0]).toEqual(0);
     });
     test("after selecting n pairs of values, returns n", async () => {
-      expect(game16Ordered.getMatchedTiles()).toEqual(0);
+      expect(game16Ordered.getScores()[0]).toEqual(0);
       await selectTilesAsync([0, 8], game16Ordered);
-      expect(game16Ordered.getMatchedTiles()).toEqual(1);
+      expect(game16Ordered.getScores()[0]).toEqual(1);
 
       await selectTilesAsync([1, 9, 2, 10, 3, 11], game16Ordered);
-      expect(game16Ordered.getMatchedTiles()).toEqual(4);
+      expect(game16Ordered.getScores()[0]).toEqual(4);
 
       await selectTilesAsync([4, 12, 5, 13, 6, 14, 7, 15], game16Ordered);
-      expect(game16Ordered.getMatchedTiles()).toEqual(8);
+      expect(game16Ordered.getScores()[0]).toEqual(8);
     });
     test("after selecting the same pair of values more than 1, returns 1", async () => {
       await selectTilesAsync([0, 8, 8, 0], game16Ordered);
-      expect(game16Ordered.getMatchedTiles()).toEqual(1);
+      expect(game16Ordered.getScores()[0]).toEqual(1);
     });
   });
   describe("isOver()", () => {
@@ -138,9 +138,9 @@ describe("SinglePlayerGame", () => {
   describe("reset()", () => {
     test("sets matched tiles to 0", async () => {
       await selectTilesAsync([0, 8, 5, 13], game16Ordered);
-      expect(game16Ordered.getMatchedTiles()).toEqual(2);
+      expect(game16Ordered.getScores()[0]).toEqual(2);
       game16Ordered.reset();
-      expect(game16Ordered.getMatchedTiles()).toEqual(0);
+      expect(game16Ordered.getScores()[0]).toEqual(0);
     });
     test("sets moves to 0", async () => {
       await selectTilesAsync([0, 8, 5, 13, 1, 3, 7], game16Ordered);

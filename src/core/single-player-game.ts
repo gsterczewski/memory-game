@@ -1,16 +1,14 @@
 import { Timer } from "../lib/timer";
-import { Game, GameOptions, SPGameResults } from "./game";
+import { Game, GameOptions, MemoryGame } from "./game";
 import { Player } from "./player";
 
-export class SinglePlayerGame extends Game {
+export class SinglePlayerGame extends Game implements MemoryGame {
   private timer: Timer;
   private player: Player;
-  private tilesToMatch: number;
   constructor(options: GameOptions) {
     super(options);
     this.timer = new Timer();
-    this.tilesToMatch = options.boardSize / 2;
-    this.player = new Player("player-1");
+    this.player = this.players[0];
   }
 
   private areAllTilesMatched(): boolean {
@@ -45,20 +43,13 @@ export class SinglePlayerGame extends Game {
   public getTime() {
     return this.timer.getTime();
   }
-  public getMatchedTiles(): number {
-    return this.player.getScore();
+  public getScores(): number[] {
+    return [this.player.getScore()];
   }
   public reset(): void {
     this.timer.reset();
     this.player.reset();
     this.board.reset();
     this.setGameStatus(this.GAME_STATUS.NOT_STARTED);
-  }
-
-  public getResults(): SPGameResults {
-    return Object.freeze({
-      time: this.getTime(),
-      moves: this.player.getMoves(),
-    });
   }
 }

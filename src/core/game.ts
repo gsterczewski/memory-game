@@ -1,6 +1,18 @@
 import { GameBoard } from "./board";
 import { GameEngine } from "./game-engine";
 import { Tile } from "./tile";
+import { Player } from "./player";
+
+export interface MemoryGame {
+  selectTile(index: number): Promise<void>;
+  getBoard(): GameBoard["tiles"];
+  isOver(): boolean;
+  reset(): void;
+  getMoves(): number;
+  getScores(): number[];
+  getTime(): number;
+  getActivePlayerID(): string;
+}
 
 export const gameOptions = {
   players: [1, 2, 3, 4],
@@ -22,18 +34,16 @@ export type GameOptions = {
   [K in keyof typeof gameOptions]: (typeof gameOptions)[K][number];
 };
 
-export type SPGameResults = {
-  moves: number;
-  time: number;
-};
-
 type Callback = () => void;
 
 export abstract class Game {
   protected board: GameBoard;
   protected engine: GameEngine;
-
+  protected tilesToMatch: number;
+  protected playersCount: number;
   protected isGameLocked = false;
+  protected players: Player[];
+  protected activePlayerIndex = 0;
 
   protected GAME_STATUS = {
     NOT_STARTED: "NOT_STARTED",
@@ -45,10 +55,29 @@ export abstract class Game {
   constructor(options: GameOptions) {
     this.board = new GameBoard(options.boardSize);
     this.engine = new GameEngine(options.gameDelay);
+    this.players = this.initPlayers(options.players);
+    this.playersCount = options.players;
+
+    this.tilesToMatch = options.boardSize / 2;
     this.currentGameStatus = this.GAME_STATUS.NOT_STARTED;
     if (options.order === "random") {
       this.board.shuffle();
     }
+  }
+  private initPlayers(playersCount: number): Player[] {
+    return Array.from({ length: playersCount }).map(
+      (_, index) => new Player(`player-${index + 1}`)
+    );
+  }
+  protected changeActivePlayer() {
+    if (this.activePlayerIndex === this.playersCount - 1) {
+      this.activePlayerIndex = 0;
+    } else {
+      this.activePlayerIndex += 1;
+    }
+  }
+  protected getActivePlayer(): Player {
+    return this.players[this.activePlayerIndex];
   }
   protected getTile(index: number): Tile {
     return this.board.getTile(index);
@@ -74,6 +103,9 @@ export abstract class Game {
     if (cb) {
       cb();
     }
+  }
+  public getActivePlayerID(): string {
+    return this.getActivePlayer().getID();
   }
   public getBoard(): GameBoard["tiles"] {
     return this.board.getTiles();

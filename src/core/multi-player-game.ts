@@ -1,33 +1,10 @@
-import { Player } from "./player";
-import { Game, GameOptions } from "./game";
+import { Game, GameOptions, MemoryGame } from "./game";
 
-export class MultiPlayerGame extends Game {
-  private players: Player[];
-  private playersCount: number;
-  private activePlayerIndex = 0;
-  private tilesToMatch: number;
+export class MultiPlayerGame extends Game implements MemoryGame {
   constructor(options: GameOptions) {
     super(options);
-    this.playersCount = options.players;
-    this.players = this.initPlayers(options.players);
-    this.tilesToMatch = options.boardSize / 2;
-  }
-  private initPlayers(playersCount: number): Player[] {
-    return Array.from({ length: playersCount }).map(
-      (_, index) => new Player(`player-${index + 1}`)
-    );
   }
 
-  private changeActivePlayer() {
-    if (this.activePlayerIndex === this.playersCount - 1) {
-      this.activePlayerIndex = 0;
-    } else {
-      this.activePlayerIndex += 1;
-    }
-  }
-  private getActivePlayer(): Player {
-    return this.players[this.activePlayerIndex];
-  }
   private incrementScore() {
     this.getActivePlayer().incrementScore();
   }
@@ -53,11 +30,14 @@ export class MultiPlayerGame extends Game {
       this.stop();
     }
   }
-  public getActivePlayerID(): string {
-    return this.getActivePlayer().getID();
+  public getTime(): number {
+    return 0;
   }
   public getScores(): number[] {
     return this.players.map((player) => player.getScore());
+  }
+  public getMoves(): number {
+    return this.players.reduce((sum, player) => sum + player.getMoves(), 0);
   }
   public reset(): void {
     this.board.reset();
