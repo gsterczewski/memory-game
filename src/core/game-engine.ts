@@ -31,11 +31,13 @@ export class GameEngine {
     if (this.firstTile!.getValue() === this.secondTile!.getValue()) {
       this.markTilesAsMatched();
       this.markTilesAsNotFlipped();
+      this.reset();
       return Promise.resolve({ score: 1, moves: 1 });
     }
     return delay(() => {
       this.markTilesAsNotFlipped();
     }, this.delaySeconds).then(() => {
+      this.reset();
       return Promise.resolve({ score: 0, moves: 1 });
     });
   }
