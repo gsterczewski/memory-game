@@ -1,19 +1,16 @@
 import { Timer } from "../lib/timer";
 import { Game, GameOptions, SPGameResults } from "./game";
 import { Player } from "./player";
-import { GameEngine } from "./game-engine";
 
 export class SinglePlayerGame extends Game {
   private timer: Timer;
   private player: Player;
   private tilesToMatch: number;
-  private engine: GameEngine;
   constructor(options: GameOptions) {
     super(options);
     this.timer = new Timer();
     this.tilesToMatch = options.boardSize / 2;
     this.player = new Player("player-1");
-    this.engine = new GameEngine(options.gameDelay);
   }
 
   private areAllTilesMatched(): boolean {

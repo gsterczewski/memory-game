@@ -1,4 +1,5 @@
 import { GameBoard } from "./board";
+import { GameEngine } from "./game-engine";
 import { Tile } from "./tile";
 
 export const gameOptions = {
@@ -27,20 +28,23 @@ export type SPGameResults = {
 };
 
 type Callback = () => void;
+
 export abstract class Game {
   protected board: GameBoard;
+  protected engine: GameEngine;
+
   protected isGameLocked = false;
+
   protected GAME_STATUS = {
     NOT_STARTED: "NOT_STARTED",
     STARTED: "STARTED",
     FINISHED: "FINISHED",
   } as const;
-
   protected currentGameStatus: keyof typeof this.GAME_STATUS;
-  protected gameDelay: number;
+
   constructor(options: GameOptions) {
     this.board = new GameBoard(options.boardSize);
-    this.gameDelay = options.gameDelay;
+    this.engine = new GameEngine(options.gameDelay);
     this.currentGameStatus = this.GAME_STATUS.NOT_STARTED;
     if (options.order === "random") {
       this.board.shuffle();
@@ -49,9 +53,7 @@ export abstract class Game {
   protected getTile(index: number): Tile {
     return this.board.getTile(index);
   }
-  protected areTilesEqual(tile1: Tile, tile2: Tile): boolean {
-    return tile1.getValue() === tile2.getValue();
-  }
+
   protected lockGame() {
     this.isGameLocked = true;
   }
@@ -73,7 +75,6 @@ export abstract class Game {
       cb();
     }
   }
-
   public getBoard(): GameBoard["tiles"] {
     return this.board.getTiles();
   }
