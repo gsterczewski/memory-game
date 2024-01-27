@@ -1,3 +1,6 @@
-export default function delayed(fn: (...args: any) => any, delay: number) {
-  setTimeout(fn, delay);
+type VariadicCallback = (...args: any[]) => any;
+export function delay(cb: VariadicCallback, seconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(cb()), seconds * 1000);
+  });
 }
