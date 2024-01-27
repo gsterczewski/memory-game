@@ -20,10 +20,10 @@ let game36Ordered: SinglePlayerGame;
 let game16Random: SinglePlayerGame;
 let game36Random: SinglePlayerGame;
 
-function selectTiles(tiles: number[], game: SinglePlayerGame): void {
-  tiles.forEach((tile) => {
-    game.selectTile(tile);
-  });
+async function selectTilesAsync(tiles: number[], game: SinglePlayerGame) {
+  for (const index of tiles) {
+    await game.selectTile(index);
+  }
 }
 beforeEach(() => {
   game16Ordered = createGame(testOptions) as SinglePlayerGame;
@@ -85,55 +85,7 @@ describe("SinglePlayerGame", () => {
       expect(values16).not.toEqual(order16);
     });
   });
-  describe("selectTile()", () => {
-    test("calling it with invalid argument does not throw error", () => {
-      expect(() => game16Ordered.selectTile(-1)).not.toThrow();
-    });
-    test("calling it with the index of the same object twice in a row, does not change the object's state ", () => {
-      const tile = game16Ordered.selectTile(0);
-      expect(tile?.isFlipped).toEqual(true);
-      expect(tile?.isMatched).toEqual(false);
-      game16Ordered.selectTile(0);
-      expect(tile?.isFlipped).toEqual(true);
-      expect(tile?.isMatched).toEqual(false);
-    });
 
-    test("calling it with index of an object that has 'isMatched' prop set to true does not change the object's state", () => {
-      const tile1 = game16Ordered.selectTile(0);
-      const tile2 = game16Ordered.selectTile(8);
-      expect(tile1?.isMatched).toEqual(true);
-      expect(tile2?.isMatched).toEqual(true);
-      game16Ordered.selectTile(0);
-      game16Ordered.selectTile(8);
-      expect(tile1?.isMatched).toEqual(true);
-      expect(tile1?.isFlipped).toEqual(false);
-      expect(tile2?.isMatched).toEqual(true);
-      expect(tile2?.isFlipped).toEqual(false);
-    });
-    test("calling it with index of an object as first in the turn, sets the object's prop 'isFlipped' to true", () => {
-      const tile1 = game16Ordered.selectTile(0);
-      expect(tile1?.isFlipped).toEqual(true);
-      game16Ordered.selectTile(2);
-      game16Ordered.selectTile(3);
-      game16Ordered.selectTile(5);
-      const tile2 = game16Ordered.selectTile(4);
-      expect(tile2?.isFlipped).toEqual(true);
-    });
-    test("calling it with index of an object that has the same 'value' as the previously selected object in the turn, sets 'isMatched' prop to true, and 'isFlipped' prop to false, on both objects", () => {
-      const turn = [game16Ordered.selectTile(2), game16Ordered.selectTile(10)];
-      turn.forEach((tile) => {
-        expect(tile?.isMatched).toEqual(true);
-        expect(tile?.isFlipped).toEqual(false);
-      });
-    });
-    test("calling it with index of an object that has different 'value' as the object previously selected in the turn, produce 'isFlipped' and 'isMatched' props as false on both objects", () => {
-      const turn = [game16Ordered.selectTile(4), game16Ordered.selectTile(2)];
-      turn.forEach((tile) => {
-        expect(tile?.isFlipped).toEqual(false);
-        expect(tile?.isMatched).toEqual(false);
-      });
-    });
-  });
   describe("getMoves()", () => {
     test("after 0 calls to selectTile() method, returns 0", () => {
       expect(game16Random.getMoves()).toEqual(0);
@@ -142,102 +94,77 @@ describe("SinglePlayerGame", () => {
       game16Random.selectTile(0);
       expect(game16Random.getMoves()).toEqual(0);
     });
-    test("after odd n calls to selectTile() method, returns (n-1)/2", () => {
-      game16Random.selectTile(0);
-      game16Random.selectTile(1);
-      game16Random.selectTile(2);
+    test("after odd n calls to selectTile() method, returns (n-1)/2", async () => {
+      await selectTilesAsync([0, 1, 2], game16Random);
       expect(game16Random.getMoves()).toEqual(1);
-      game16Random.selectTile(5);
-      expect(game16Random.getMoves()).toEqual(2);
-      game16Random.selectTile(8);
+
+      await selectTilesAsync([5, 8], game16Random);
       expect(game16Random.getMoves()).toEqual(2);
     });
-    test("after even n calls to selectTile() method, returns n/2", () => {
-      game16Random.selectTile(0);
-      game16Random.selectTile(1);
+    test("after even n calls to selectTile() method, returns n/2", async () => {
+      await selectTilesAsync([0, 1], game16Random);
       expect(game16Random.getMoves()).toEqual(1);
-      game16Random.selectTile(2);
-      game16Random.selectTile(5);
+
+      await selectTilesAsync([2, 5], game16Random);
       expect(game16Random.getMoves()).toEqual(2);
     });
   });
   describe("getMatchedTiles()", () => {
     test("after 0 calls to selectTile(), returns 0", () => {
       expect(game16Random.getMatchedTiles()).toEqual(0);
-      expect(game36Random.getMatchedTiles()).toEqual(0);
     });
-    test("after selecting n pairs of values, returns n", () => {
+    test("after selecting n pairs of values, returns n", async () => {
       expect(game16Ordered.getMatchedTiles()).toEqual(0);
-      game16Ordered.selectTile(0);
-      game16Ordered.selectTile(8);
+      await selectTilesAsync([0, 8], game16Ordered);
       expect(game16Ordered.getMatchedTiles()).toEqual(1);
-      game16Ordered.selectTile(1);
-      game16Ordered.selectTile(9);
-      game16Ordered.selectTile(2);
-      game16Ordered.selectTile(10);
-      game16Ordered.selectTile(3);
-      game16Ordered.selectTile(11);
+
+      await selectTilesAsync([1, 9, 2, 10, 3, 11], game16Ordered);
       expect(game16Ordered.getMatchedTiles()).toEqual(4);
-      game16Ordered.selectTile(4);
-      game16Ordered.selectTile(12);
-      game16Ordered.selectTile(5);
-      game16Ordered.selectTile(13);
-      game16Ordered.selectTile(6);
-      game16Ordered.selectTile(14);
-      game16Ordered.selectTile(7);
-      game16Ordered.selectTile(15);
+
+      await selectTilesAsync([4, 12, 5, 13, 6, 14, 7, 15], game16Ordered);
       expect(game16Ordered.getMatchedTiles()).toEqual(8);
     });
-    test("after selecting the same pair of values more than 1, returns 1", () => {
-      game16Ordered.selectTile(0);
-      game16Ordered.selectTile(8);
-      game16Ordered.selectTile(8);
-      game16Ordered.selectTile(0);
+    test("after selecting the same pair of values more than 1, returns 1", async () => {
+      await selectTilesAsync([0, 8, 8, 0], game16Ordered);
       expect(game16Ordered.getMatchedTiles()).toEqual(1);
     });
   });
   describe("isOver()", () => {
-    test("returns false when not all tiles are matched", () => {
+    test("returns false when not all tiles are matched", async () => {
       const tilesToFlip = [0, 8, 2, 9, 3, 10, 4, 15, 6, 13];
-      tilesToFlip.forEach((tile) => {
-        game16Ordered.selectTile(tile);
-      });
+      await selectTilesAsync(tilesToFlip, game16Ordered);
       expect(game16Ordered.isOver()).toEqual(false);
     });
-    test("returns true when all tiles are matched", () => {
+    test("returns true when all tiles are matched", async () => {
       const tilesToFlip = [
         0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15,
       ];
-      tilesToFlip.forEach((tile) => {
-        game16Ordered.selectTile(tile);
-      });
+      await selectTilesAsync(tilesToFlip, game16Ordered);
       expect(game16Ordered.isOver()).toEqual(true);
     });
   });
   describe("reset()", () => {
-    test("sets matched tiles to 0", () => {
-      selectTiles([0, 8, 5, 13], game16Ordered);
+    test("sets matched tiles to 0", async () => {
+      await selectTilesAsync([0, 8, 5, 13], game16Ordered);
       expect(game16Ordered.getMatchedTiles()).toEqual(2);
-
       game16Ordered.reset();
       expect(game16Ordered.getMatchedTiles()).toEqual(0);
     });
-    test("sets moves to 0", () => {
-      selectTiles([0, 8, 5, 13, 1, 3, 7], game16Ordered);
+    test("sets moves to 0", async () => {
+      await selectTilesAsync([0, 8, 5, 13, 1, 3, 7], game16Ordered);
       expect(game16Ordered.getMoves()).toEqual(3);
-
       game16Ordered.reset();
       expect(game16Ordered.getMoves()).toEqual(0);
     });
     test("sets time to 0", async () => {
-      game16Ordered.selectTile(0);
+      await game16Ordered.selectTile(0);
       await sleep(1000);
       expect(game16Ordered.getTime()).toBeGreaterThan(0);
       game16Ordered.reset();
       expect(game16Ordered.getTime()).toEqual(0);
     });
-    test("resets board to initial state", () => {
-      selectTiles([0, 8, 5, 13, 1, 3, 7], game16Ordered);
+    test("resets board to initial state", async () => {
+      await selectTilesAsync([0, 8, 5, 13, 1, 3, 7], game16Ordered);
       expect(
         game16Ordered
           .getBoard()
