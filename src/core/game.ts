@@ -22,16 +22,16 @@ export const gameOptions = {
   gameDelay: [0, 1, 2],
 } as const;
 
+export type GameOptions = {
+  [K in keyof typeof gameOptions]: (typeof gameOptions)[K][number];
+};
+
 export const defaultOptions: GameOptions = {
   players: 1,
   theme: "numbers",
   boardSize: 16,
   order: "random",
   gameDelay: 1,
-};
-
-export type GameOptions = {
-  [K in keyof typeof gameOptions]: (typeof gameOptions)[K][number];
 };
 
 type Callback = () => void;
