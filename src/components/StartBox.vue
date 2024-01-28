@@ -4,7 +4,9 @@ import RadioButton from "./RadioButton.vue";
 import useGame from "../composables/useGame";
 import { ref } from "vue";
 
-const { availableOptions, currentOptions, setOptions } = useGame();
+const { optionsState, gameControls } = useGame();
+const { availableOptions, currentOptions } = optionsState;
+const { setOptions } = gameControls;
 
 const model = {
   theme: ref(currentOptions.theme),
