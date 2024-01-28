@@ -1,20 +1,30 @@
 <script setup lang="ts">
 import BaseButton from "./BaseButton.vue";
 import RadioButton from "./RadioButton.vue";
-import { options } from "../core/options";
-/**
- * @todo use some existing type here
- * @todo it should be a prop
- */
-const availableOptions = {
-  players: [1, 2, 3, 4],
-  theme: ["numbers", "icons"],
-  grid: [16, 36],
+import useGame from "../composables/useGame";
+import { ref } from "vue";
+
+const { availableOptions, currentOptions, setOptions } = useGame();
+
+const model = {
+  theme: ref(currentOptions.theme),
+  boardSize: ref(currentOptions.boardSize),
+  players: ref(currentOptions.players),
 };
+
 type StartBoxProps = {
   handleStartGame(): void;
 };
-defineProps<StartBoxProps>();
+const props = defineProps<StartBoxProps>();
+
+function confirm() {
+  setOptions({
+    players: model.players.value,
+    boardSize: model.boardSize.value,
+    theme: model.theme.value,
+  });
+  props.handleStartGame();
+}
 </script>
 <template>
   <div class="box">
@@ -28,7 +38,7 @@ defineProps<StartBoxProps>();
             :value="theme"
             name="theme"
             :label="theme"
-            v-model="options.theme"
+            v-model="model.theme.value"
             size="large"
           />
         </div>
@@ -42,7 +52,7 @@ defineProps<StartBoxProps>();
             :value="playersNumber"
             name="players"
             :label="`${playersNumber}`"
-            v-model="options.players"
+            v-model="model.players.value"
           />
         </div>
       </fieldset>
@@ -50,18 +60,18 @@ defineProps<StartBoxProps>();
         <legend>Grid Size</legend>
         <div class="radio-group">
           <RadioButton
-            v-for="(grid, index) in availableOptions.grid"
+            v-for="(grid, index) in availableOptions.boardSize"
             :id="`grid-${index + 1}`"
             :value="grid"
             name="grid"
             :label="`${Math.sqrt(grid)}x${Math.sqrt(grid)}`"
-            v-model="options.grid"
+            v-model="model.boardSize.value"
             size="large"
           />
         </div>
       </fieldset>
       <div class="row-4">
-        <BaseButton size="large" theme="primary" @click="handleStartGame"
+        <BaseButton size="large" theme="primary" @click="confirm"
           >Start Game</BaseButton
         >
       </div>
