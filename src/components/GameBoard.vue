@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Tile } from "../core/types";
+import { Tile } from "../core/tile";
 type GameBoardProps = {
   board: Tile[];
   handleFlipTile: (index: number) => void;
@@ -14,7 +14,7 @@ const shouldShowValue = (tile: Tile) => tile.isFlipped || tile.isMatched;
     <button
       class="tile"
       v-for="(tile, index) in board"
-      :key="tile.id"
+      :key="tile.getID()"
       @click="() => handleFlipTile(index)"
       :disabled="tile.isMatched || tile.isFlipped"
       :class="{
@@ -22,7 +22,7 @@ const shouldShowValue = (tile: Tile) => tile.isFlipped || tile.isMatched;
         'tile--isMatched': tile.isMatched,
       }"
     >
-      <span v-if="shouldShowValue(tile)">{{ tile.value }}</span>
+      <span v-if="shouldShowValue(tile)">{{ tile.getValue() }}</span>
     </button>
   </div>
 </template>
