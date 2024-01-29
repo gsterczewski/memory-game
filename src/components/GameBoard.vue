@@ -1,29 +1,29 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Tile } from "../core/tile";
+import GameTile from "./GameTile.vue";
 type GameBoardProps = {
   board: Tile[];
   handleFlipTile: (index: number) => void;
 };
 const props = defineProps<GameBoardProps>();
 const boardGridSize = computed(() => props.board.length);
-const shouldShowValue = (tile: Tile) => tile.isFlipped || tile.isMatched;
 </script>
 <template>
-  <div class="board" :class="`board-grid-${boardGridSize}`">
-    <button
-      class="tile"
+  <div
+    class="board"
+    :class="`board-grid-${boardGridSize}`"
+    data-test="board"
+    @select-tile="(tileIndex:number) => handleFlipTile(tileIndex)"
+  >
+    <GameTile
       v-for="(tile, index) in board"
       :key="tile.getID()"
-      @click="() => handleFlipTile(index)"
-      :disabled="tile.isMatched || tile.isFlipped"
-      :class="{
-        'tile--isFlipped': tile.isFlipped,
-        'tile--isMatched': tile.isMatched,
-      }"
-    >
-      <span v-if="shouldShowValue(tile)">{{ tile.getValue() }}</span>
-    </button>
+      :tile-index="index"
+      :tileValue="tile.getValue()"
+      :is-flipped="tile.isFlipped"
+      :is-matched="tile.isMatched"
+    />
   </div>
 </template>
 <style scoped>
@@ -53,23 +53,5 @@ const shouldShowValue = (tile: Tile) => tile.isFlipped || tile.isMatched;
   --grid-gap: calc(var(--board-width) * 0.03);
   --pref-tile-fs: calc(var(--tile-size) * 0.53);
   --max-tile-fs: 2.75rem;
-}
-.tile {
-  width: var(--tile-size);
-  height: var(--tile-size);
-  max-width: var(--max-tile-size);
-  max-height: var(--max-tile-size);
-  font-size: var(--tile-fs);
-  font-weight: bold;
-  border: none;
-  border-radius: 50%;
-  background-color: var(--color-neutral-800);
-  color: var(--color-neutral-200);
-}
-.tile--isMatched {
-  background-color: var(--color-primary);
-}
-.tile--isFlipped {
-  background-color: var(--color-neutral-500);
 }
 </style>
