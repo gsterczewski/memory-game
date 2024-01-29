@@ -23,18 +23,20 @@ export class SinglePlayerGame extends Game implements MemoryGame {
         this.timer.start();
       });
     }
+    this.lockGame();
     const { moves, score } = await this.engine.setTile(this.getTile(tileIndex));
-    if (moves) {
-      this.player.incrementMoves();
-    }
     if (score) {
       this.player.incrementScore();
+    }
+    if (moves) {
+      this.player.incrementMoves();
     }
     if (this.areAllTilesMatched()) {
       this.stop(() => {
         this.timer.stop();
       });
     }
+    this.unlockGame();
   }
 
   public getMoves() {

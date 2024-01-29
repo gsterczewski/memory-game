@@ -19,6 +19,7 @@ export class MultiPlayerGame extends Game implements MemoryGame {
     if (this.currentGameStatus !== this.GAME_STATUS.STARTED) {
       this.start();
     }
+    this.lockGame();
     const { moves, score } = await this.engine.setTile(this.getTile(tileIndex));
     if (score) {
       this.incrementScore();
@@ -29,6 +30,7 @@ export class MultiPlayerGame extends Game implements MemoryGame {
     if (this.areAllTilesMatched()) {
       this.stop();
     }
+    this.unlockGame();
   }
   public getTime(): number {
     return 0;
