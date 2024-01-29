@@ -10,12 +10,7 @@ const props = defineProps<GameBoardProps>();
 const boardGridSize = computed(() => props.board.length);
 </script>
 <template>
-  <div
-    class="board"
-    :class="`board-grid-${boardGridSize}`"
-    data-test="board"
-    @select-tile="(tileIndex:number) => handleFlipTile(tileIndex)"
-  >
+  <div class="board" :class="`board-grid-${boardGridSize}`" data-test="board">
     <GameTile
       v-for="(tile, index) in board"
       :key="tile.getID()"
@@ -23,6 +18,7 @@ const boardGridSize = computed(() => props.board.length);
       :tileValue="tile.getValue()"
       :is-flipped="tile.isFlipped"
       :is-matched="tile.isMatched"
+      @select-tile="(tileIndex:number) => handleFlipTile(tileIndex)"
     />
   </div>
 </template>
