@@ -7,7 +7,7 @@ const STAGE = {
   SHOW_MENU: "MENU",
 } as const;
 
-type AppStage = (typeof STAGE)[keyof typeof STAGE];
+export type AppStage = (typeof STAGE)[keyof typeof STAGE];
 
 const currentAppStage: Ref<AppStage> = ref(STAGE.SHOW_GAME);
 
