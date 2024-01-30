@@ -12,8 +12,6 @@ type GameSummaryProps = {
   title: string;
   caption: string;
   results: Result[];
-  handleRestart: (...args: any[]) => void;
-  handleStartNewGame: (...args: any[]) => void;
 };
 
 defineProps<GameSummaryProps>();
@@ -34,14 +32,14 @@ defineProps<GameSummaryProps>();
       />
     </div>
     <BaseButton
-      @click="handleRestart"
+      @click="() => $emit('restart-request')"
       class="grid-item-4"
       size="large--no-scale"
       theme="primary"
       >Restart</BaseButton
     >
     <BaseButton
-      @click="handleStartNewGame"
+      @click="() => $emit('new-game-request')"
       class="grid-item-5"
       size="large--no-scale"
       >Setup New Game</BaseButton
