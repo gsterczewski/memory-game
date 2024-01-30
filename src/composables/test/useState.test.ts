@@ -1,7 +1,20 @@
 import { describe, test, expect } from "vitest";
 import useState from "../useState";
-const { state, methods } = useState();
-
+const { state, setGameStage } = useState();
+const methods = {
+  showStartScreen() {
+    setGameStage("START");
+  },
+  showGameScreen() {
+    setGameStage("GAME");
+  },
+  showMenu() {
+    setGameStage("MENU");
+  },
+  hideMenu() {
+    setGameStage("GAME");
+  },
+};
 describe("useState", () => {
   describe("Initial state", () => {
     test("on intial load shouldShowGameScreen returns true", () => {
