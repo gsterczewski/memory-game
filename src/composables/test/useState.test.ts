@@ -1,20 +1,31 @@
-import { describe, test, expect } from "vitest";
-import useState from "../useState";
+import { describe, test, expect, beforeEach } from "vitest";
+import useState, { AppStage } from "../useState";
 const { state, setGameStage } = useState();
-const methods = {
-  showStartScreen() {
-    setGameStage("START");
-  },
-  showGameScreen() {
-    setGameStage("GAME");
-  },
-  showMenu() {
-    setGameStage("MENU");
-  },
-  hideMenu() {
-    setGameStage("GAME");
-  },
-};
+
+function testStage(stage: AppStage, truthArray: boolean[]) {
+  const fns = [
+    state.shouldShowStartScreen,
+    state.shouldShowGameScreen,
+    state.shouldShowMenu,
+    state.shouldShowResults,
+  ];
+  const fnsNames = [
+    "shouldShowStartScreen",
+    "shouldShowGameScreen",
+    "shouldShowMenu",
+    "shouldShowResults",
+  ];
+  describe(`STAGE: ${stage}`, () => {
+    beforeEach(() => {
+      setGameStage(stage);
+    });
+    fns.forEach((fn, index) => {
+      test(`${fnsNames[index]} returns ${truthArray[index]}`, () => {
+        expect(fn.value).toEqual(truthArray[index]);
+      });
+    });
+  });
+}
 describe("useState", () => {
   describe("Initial state", () => {
     test("on intial load shouldShowGameScreen returns true", () => {
@@ -26,61 +37,14 @@ describe("useState", () => {
     test("on intial load shouldShowMenu returns false", () => {
       expect(state.shouldShowMenu.value).toEqual(false);
     });
-    describe("showStartScreen()", () => {
-      test("sets shouldShowStartScreen to true", () => {
-        methods.showStartScreen();
-        expect(state.shouldShowStartScreen.value).toEqual(true);
-      });
-      test("sets shouldShowGameScreen to false", () => {
-        methods.showStartScreen();
-        expect(state.shouldShowGameScreen.value).toEqual(false);
-      });
-      test("sets shouldShowMenu to false", () => {
-        methods.showStartScreen();
-        expect(state.shouldShowMenu.value).toEqual(false);
-      });
+    test("on intial load shouldShowResults returns false", () => {
+      expect(state.shouldShowResults.value).toEqual(false);
     });
-    describe("showGameScreen()", () => {
-      test("sets shouldShowGameScreen to true", () => {
-        methods.showGameScreen();
-        expect(state.shouldShowGameScreen.value).toEqual(true);
-      });
-      test("sets shouldShowStartScreen to false", () => {
-        methods.showGameScreen();
-        expect(state.shouldShowStartScreen.value).toEqual(false);
-      });
-      test("sets shouldShowMenu to false", () => {
-        methods.showGameScreen();
-        expect(state.shouldShowMenu.value).toEqual(false);
-      });
-    });
-    describe("showMenu()", () => {
-      test("sets shouldShowMenu to true", () => {
-        methods.showMenu();
-        expect(state.shouldShowMenu.value).toEqual(true);
-      });
-      test("sets shouldShowGameScreen to true", () => {
-        methods.showMenu();
-        expect(state.shouldShowGameScreen.value).toEqual(true);
-      });
-      test("sets shouldShowStartScreen to false", () => {
-        methods.showMenu();
-        expect(state.shouldShowStartScreen.value).toEqual(false);
-      });
-    });
-    describe("hideMenu()", () => {
-      test("sets shouldShowMenu to false", () => {
-        methods.hideMenu();
-        expect(state.shouldShowMenu.value).toEqual(false);
-      });
-      test("sets shouldShowGameScreen to true", () => {
-        methods.hideMenu();
-        expect(state.shouldShowGameScreen.value).toEqual(true);
-      });
-      test("sets shouldShowStartScreen to false", () => {
-        methods.hideMenu();
-        expect(state.shouldShowStartScreen.value).toEqual(false);
-      });
-    });
+  });
+  describe("setGameStage()", () => {
+    testStage("START", [true, false, false, false]);
+    testStage("GAME", [false, true, false, false]);
+    testStage("MENU", [false, true, true, false]);
+    testStage("RESULTS", [false, true, false, true]);
   });
 });
