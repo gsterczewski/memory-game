@@ -19,104 +19,104 @@ beforeEach(() => {
 });
 
 describe("multiplayer game", () => {
-  describe("getActivePlayerID", () => {
+  describe("getActivePlayerIndex", () => {
     describe("2 player game", () => {
-      test("after 0 moves, returns id of player 1", () => {
-        expect(game2.getActivePlayerID()).toEqual("player-1");
+      test("after 0 moves, returns index of player 1", () => {
+        expect(game2.getActivePlayerIndex()).toEqual(0);
       });
-      test("after 1 move, returns id of player 2", async () => {
+      test("after 1 move, returns index of player 2", async () => {
         await selectTilesAsync([0, 1], game2);
-        expect(game2.getActivePlayerID()).toEqual("player-2");
+        expect(game2.getActivePlayerIndex()).toEqual(1);
       });
-      test("after 2 moves, returns id of player 1", async () => {
+      test("after 2 moves, returns index of player 1", async () => {
         await selectTilesAsync([0, 1, 5, 6], game2);
-        expect(game2.getActivePlayerID()).toEqual("player-1");
+        expect(game2.getActivePlayerIndex()).toEqual(0);
       });
-      test("after 3 moves, returns id of player 2", async () => {
+      test("after 3 moves, returns index of player 2", async () => {
         await selectTilesAsync([0, 1, 5, 6, 7, 8], game2);
-        expect(game2.getActivePlayerID()).toEqual("player-2");
+        expect(game2.getActivePlayerIndex()).toEqual(1);
       });
-      test("after even n of moves, returns id of player 1", async () => {
+      test("after even n of moves, returns index of player 1", async () => {
         await selectTilesAsync([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], game2);
-        expect(game2.getActivePlayerID()).toEqual("player-1");
+        expect(game2.getActivePlayerIndex()).toEqual(0);
       });
-      test("after odd n of moves, returns id of player 2", async () => {
+      test("after odd n of moves, returns index of player 2", async () => {
         await selectTilesAsync(
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           game2
         );
-        expect(game2.getActivePlayerID()).toEqual("player-2");
+        expect(game2.getActivePlayerIndex()).toEqual(1);
       });
     });
     describe("3 player game", () => {
-      test("after 0 moves, returns id of player 1", async () => {
-        expect(game3.getActivePlayerID()).toEqual("player-1");
+      test("after 0 moves, returns index of player 1", async () => {
+        expect(game3.getActivePlayerIndex()).toEqual(0);
       });
-      test("after 1 move, returns id of player 2", async () => {
+      test("after 1 move, returns index of player 2", async () => {
         await selectTilesAsync([0, 1], game3);
-        expect(game3.getActivePlayerID()).toEqual("player-2");
+        expect(game3.getActivePlayerIndex()).toEqual(1);
       });
-      test("after 2 moves, returns id of player 3", async () => {
+      test("after 2 moves, returns index of player 3", async () => {
         await selectTilesAsync([0, 1, 2, 3], game3);
-        expect(game3.getActivePlayerID()).toEqual("player-3");
+        expect(game3.getActivePlayerIndex()).toEqual(2);
       });
-      test("after 6 moves, returns id of player 1", async () => {
+      test("after 6 moves, returns index of player 1", async () => {
         await selectTilesAsync([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], game3);
-        expect(game3.getActivePlayerID()).toEqual("player-1");
+        expect(game3.getActivePlayerIndex()).toEqual(0);
       });
-      test("after 7 moves, returns id of player 2", async () => {
+      test("after 7 moves, returns index of player 2", async () => {
         await selectTilesAsync(
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           game3
         );
-        expect(game3.getActivePlayerID()).toEqual("player-2");
+        expect(game3.getActivePlayerIndex()).toEqual(1);
       });
-      test("after 8 moves, returns id of player 3", async () => {
+      test("after 8 moves, returns index of player 3", async () => {
         await selectTilesAsync(
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
           game3
         );
-        expect(game3.getActivePlayerID()).toEqual("player-3");
+        expect(game3.getActivePlayerIndex()).toEqual(2);
       });
     });
     describe("4 player game", () => {
-      test("after 0 moves, returns id of player 1", async () => {
-        expect(game4.getActivePlayerID()).toEqual("player-1");
+      test("after 0 moves, returns index of player 1", async () => {
+        expect(game4.getActivePlayerIndex()).toEqual(0);
       });
-      test("after 1 move, returns id of player 2", async () => {
+      test("after 1 move, returns index of player 2", async () => {
         await selectTilesAsync([0, 1], game4);
-        expect(game4.getActivePlayerID()).toEqual("player-2");
+        expect(game4.getActivePlayerIndex()).toEqual(1);
       });
-      test("after 2 moves, returns id of player 3", async () => {
+      test("after 2 moves, returns index of player 3", async () => {
         await selectTilesAsync([0, 1, 2, 3], game4);
-        expect(game4.getActivePlayerID()).toEqual("player-3");
+        expect(game4.getActivePlayerIndex()).toEqual(2);
       });
-      test("after 3 moves, returns id of player 4", async () => {
+      test("after 3 moves, returns index of player 4", async () => {
         await selectTilesAsync([0, 1, 2, 3, 4, 5], game4);
-        expect(game4.getActivePlayerID()).toEqual("player-4");
+        expect(game4.getActivePlayerIndex()).toEqual(3);
       });
-      test("after 8 moves, returns id of player 1", async () => {
+      test("after 8 moves, returns index of player 1", async () => {
         await selectTilesAsync(
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
           game4
         );
-        expect(game4.getActivePlayerID()).toEqual("player-1");
+        expect(game4.getActivePlayerIndex()).toEqual(0);
       });
-      test("after 9 moves, returns id of player 2", async () => {
+      test("after 9 moves, returns index of player 2", async () => {
         await selectTilesAsync(
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1],
           game4
         );
-        expect(game4.getActivePlayerID()).toEqual("player-2");
+        expect(game4.getActivePlayerIndex()).toEqual(1);
       });
-      test("after 10 moves, returns id of player 3", async () => {
+      test("after 10 moves, returns index of player 3", async () => {
         await selectTilesAsync(
           [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3],
           game4
         );
-        expect(game4.getActivePlayerID()).toEqual("player-3");
+        expect(game4.getActivePlayerIndex()).toEqual(2);
       });
-      test("after 11 moves, returns id of player 4", async () => {
+      test("after 11 moves, returns index of player 4", async () => {
         await selectTilesAsync(
           [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 5,
@@ -124,7 +124,7 @@ describe("multiplayer game", () => {
           ],
           game4
         );
-        expect(game4.getActivePlayerID()).toEqual("player-4");
+        expect(game4.getActivePlayerIndex()).toEqual(3);
       });
     });
   });
@@ -191,9 +191,9 @@ describe("multiplayer game", () => {
     });
     test("it should reset current turn to initial state", async () => {
       await selectTilesAsync([0, 8], game2);
-      expect(game2.getActivePlayerID()).toEqual("player-2");
+      expect(game2.getActivePlayerIndex()).toEqual(1);
       game2.reset();
-      expect(game2.getActivePlayerID()).toEqual("player-1");
+      expect(game2.getActivePlayerIndex()).toEqual(0);
     });
   });
 });

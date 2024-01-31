@@ -11,7 +11,8 @@ export interface MemoryGame {
   getMoves(): number;
   getScores(): number[];
   getTime(): number;
-  getActivePlayerID(): string;
+
+  getActivePlayerIndex(): number;
 }
 
 export const gameOptions = {
@@ -104,8 +105,9 @@ export abstract class Game {
       cb();
     }
   }
-  public getActivePlayerID(): string {
-    return this.getActivePlayer().getID();
+
+  public getActivePlayerIndex(): number {
+    return this.activePlayerIndex;
   }
   public getBoard(): GameBoard["tiles"] {
     return this.board.getTiles();
