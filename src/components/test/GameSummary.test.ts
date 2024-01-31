@@ -27,11 +27,19 @@ describe("GameSummary.vue", () => {
       expect(bars[1].get("#text-bar-caption").text()).toEqual("Moves Taken");
       expect(bars[1].get("#text-bar-result").text()).toEqual("8 Moves");
     });
-    test("renders single player game time", () => {
+    test("renders single player game time", async () => {
       const bars = wrapper.get("#summary-content").findAllComponents("*");
 
       expect(bars[0].get("#text-bar-caption").text()).toEqual("Time Elapsed");
       expect(bars[0].get("#text-bar-result").text()).toEqual("1:44");
+      await wrapper.setProps({ moves: 8, scores: [8], time: 59 });
+      expect(
+        wrapper
+          .get("#summary-content")
+          .findAllComponents("*")[0]
+          .get("#text-bar-result")
+          .text()
+      ).toEqual("0:59");
     });
   });
   describe("Multiplayer game", () => {
