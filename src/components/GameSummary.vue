@@ -1,20 +1,78 @@
 <script setup lang="ts">
 import BaseButton from "./BaseButton.vue";
 import TextBar from "./TextBar.vue";
+import { computed } from "vue";
 
+type GameSummaryProps = {
+  scores: number[];
+  moves: number;
+  time: number;
+};
+const props = defineProps<GameSummaryProps>();
 type Result = {
-  caption: string;
-  text: string;
+  label: string;
+  score: string;
+  playerIndex: number;
   isWinner: boolean;
 };
 
-type GameSummaryProps = {
-  title: string;
-  caption: string;
-  results: Result[];
-};
+function formatTime(time: number): string {
+  const seconds = time % 60;
+  const minutes = Math.floor(time / 60);
+  const prependZeroIfLessThan10 = (n: number): string =>
+    n < 10 ? `0${n}` : `${n}`;
+  return `${minutes}:${prependZeroIfLessThan10(seconds)}`;
+}
 
-defineProps<GameSummaryProps>();
+function produceSinglePlayerResults(): Result[] {
+  return [
+    {
+      label: "Time Elapsed",
+      score: `${formatTime(props.time)}`,
+      isWinner: false,
+      playerIndex: 1,
+    },
+    {
+      label: "Moves Taken",
+      score: `${props.moves} Moves`,
+      isWinner: false,
+      playerIndex: 1,
+    },
+  ];
+}
+function produceMultiPlayerResults(): Result[] {
+  let highestScore = 0;
+  props.scores.forEach((score) => {
+    if (score > highestScore) {
+      highestScore = score;
+    }
+  });
+  return props.scores.map((score, index) => {
+    const isWinner = score === highestScore;
+    return {
+      label: isWinner ? `Player ${index + 1}(Winner!)` : `Player ${index + 1}`,
+      score: `${score} Pairs`,
+      playerIndex: index + 1,
+      isWinner,
+    };
+  });
+}
+
+const isMulitplayer = computed(() => props.scores.length > 1);
+const results = computed<Result[]>((): Result[] => {
+  if (isMulitplayer.value) return produceMultiPlayerResults();
+  return produceSinglePlayerResults();
+});
+const title = computed<string>((): string => {
+  if (!isMulitplayer.value) return "You did it!";
+  const winners = results.value.filter((result) => result.isWinner);
+  if (winners.length > 1) return "It's a tie!";
+  return `Player ${winners[0].playerIndex} Wins!`;
+});
+const caption = computed<string>((): string => {
+  if (isMulitplayer.value) return "Game over! Here are the results...";
+  return "Game over! Here's how you got on...";
+});
 </script>
 <template>
   <div class="summary-box grid">
@@ -22,23 +80,25 @@ defineProps<GameSummaryProps>();
     <p class="summary-caption grid-item-2">
       {{ caption }}
     </p>
-    <div class="summary-content grid-item-3">
+    <div id="summary-content" class="summary-content grid-item-3">
       <TextBar
         v-for="(result, index) in results"
-        :caption="result.caption"
-        :text="result.text"
+        :caption="result.label"
+        :text="result.score"
         :isHighlighted="result.isWinner"
         :key="index"
       />
     </div>
     <BaseButton
       @click="() => $emit('restart-request')"
+      id="summary-button-restart"
       class="grid-item-4"
       size="large--no-scale"
       theme="primary"
       >Restart</BaseButton
     >
     <BaseButton
+      id="summary-button-new-game"
       @click="() => $emit('new-game-request')"
       class="grid-item-5"
       size="large--no-scale"
