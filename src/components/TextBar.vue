@@ -8,8 +8,8 @@ defineProps<TextBarProps>();
 </script>
 <template>
   <p class="text-bar" :class="{ '--highlighted': isHighlighted }">
-    <span class="text-bar-caption">{{ caption }}</span>
-    <span class="text-bar-result">{{ text }}</span>
+    <span id="text-bar-caption" class="text-bar-caption">{{ caption }}</span>
+    <span id="text-bar-result" class="text-bar-result">{{ text }}</span>
   </p>
 </template>
 <style scoped>
