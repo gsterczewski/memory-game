@@ -1,22 +1,23 @@
 <script setup lang="ts">
+import { computed } from "vue";
 type StatusBarProps = {
-  scores?: number[];
-  time: number;
+  scores: number[];
+  time: string;
   moves: number;
-  playerTurn: number;
-  players: number;
+  activePlayerIndex: number;
 };
-defineProps<StatusBarProps>();
+const props = defineProps<StatusBarProps>();
+const players = computed(() => props.scores.length);
 </script>
 <template>
   <div v-if="players === 1" class="status-bar">
-    <div class="status">
+    <div data-test="sp-status" class="status">
       <span class="status-caption"> Time </span>
-      <span class="status-value">{{ time }}</span>
+      <span data-test="sp-status-time" class="status-value">{{ time }}</span>
     </div>
     <div class="status">
       <span class="status-caption">Moves</span>
-      <span class="status-value">{{ moves }}</span>
+      <span data-test="sp-status-moves" class="status-value">{{ moves }}</span>
     </div>
   </div>
   <div class="status-bar" v-else>
@@ -24,15 +25,19 @@ defineProps<StatusBarProps>();
       v-for="(score, index) in scores"
       :key="index"
       class="status"
-      :class="{ 'status--selected': index === playerTurn }"
+      :class="{ 'status--selected': index === activePlayerIndex }"
+      data-test="mp-status"
     >
       <span class="status-caption status-caption--mobile">
         {{ `P${index + 1}` }}</span
       >
-      <span class="status-caption status-caption--desktop">
+      <span
+        data-test="mp-status-player"
+        class="status-caption status-caption--desktop"
+      >
         {{ `Player ${index + 1}` }}</span
       >
-      <span class="status-value">{{ score }}</span>
+      <span data-test="mp-status-score" class="status-value">{{ score }}</span>
     </div>
   </div>
 </template>
