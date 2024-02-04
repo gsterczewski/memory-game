@@ -92,34 +92,35 @@ const caption = computed<string>((): string => {
     <BaseButton
       @click="() => $emit('restart-request')"
       id="summary-button-restart"
-      class="grid-item-4"
-      size="large--no-scale"
+      class="grid-item-4 summary-box-button"
+      size="block"
       theme="primary"
       >Restart</BaseButton
     >
     <BaseButton
       id="summary-button-new-game"
       @click="() => $emit('new-game-request')"
-      class="grid-item-5"
-      size="large--no-scale"
+      class="grid-item-5 summary-box-button"
+      size="block"
       >Setup New Game</BaseButton
     >
   </div>
 </template>
 <style scoped>
 .summary-box {
-  max-width: 40em;
-  padding-inline: 1.5em;
-  padding-top: 2em;
-  padding-bottom: 1.5em;
+  --summary-box-max-w: 30em;
+  width: clamp(20em, 85%, var(--summary-box-max-w));
+  padding: 2em 1.5em 1.5em 1.5em;
   border-radius: 1rem;
   background: var(--color-neutral-200);
+  text-align: center;
 }
-
+.summary-box-button {
+  font-size: 1.125rem;
+}
 .grid {
   display: grid;
-  grid-template-rows: auto 0.625rem auto 1.5rem auto 1.5rem auto 1rem auto;
-  justify-items: center;
+  grid-template-rows: auto 0.625rem auto 1.5rem auto 1.5rem 3rem 1rem 3rem;
 }
 .grid-item-1 {
   grid-row: 1;
@@ -153,9 +154,18 @@ const caption = computed<string>((): string => {
 }
 
 @media (min-width: 48em) {
+  .summary-box {
+    --summary-box-max-w: 41em;
+    padding-inline: 3.5rem;
+    padding-top: 3.15rem;
+    padding-bottom: 4.375rem;
+  }
+  .summary-box-button {
+    font-size: 1.25rem;
+  }
   .grid {
-    grid-template-columns: auto auto;
-    grid-template-rows: auto 1rem auto 2.5rem auto 3.5rem auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1rem auto 2.5rem auto 3.5rem 3.25rem;
     column-gap: 1rem;
   }
   .grid-item-1 {
@@ -174,11 +184,6 @@ const caption = computed<string>((): string => {
   .grid-item-5 {
     grid-column: 2;
     grid-row: 7;
-  }
-  .summary-box {
-    padding-inline: 3.5rem;
-    padding-top: 3.15rem;
-    padding-bottom: 4.375rem;
   }
   .summary-title {
     font-size: 3rem;
