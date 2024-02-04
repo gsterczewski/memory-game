@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
     class="button"
     :class="`button--${props.size} button--${props.theme}`"
   >
-    <slot />
+    <slot></slot>
   </button>
 </template>
 <style scoped>
@@ -45,7 +45,6 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 }
 .button--block {
   width: 100%;
-  aspect-ratio: 5.8/1;
   font-size: inherit;
 }
 @media (min-width: 48em) {
