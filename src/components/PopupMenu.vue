@@ -18,12 +18,12 @@ defineProps<PopupMenuProps>();
 </template>
 <style scoped>
 .menu-box {
+  min-width: 15em;
   width: min(87%, 450px);
   aspect-ratio: 1.5/1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: repeat(3, 3rem);
+  align-content: center;
   font-size: clamp(0.75rem, 4.8vw, 1.25rem);
   padding: 1.33em;
   row-gap: 0.88em;
