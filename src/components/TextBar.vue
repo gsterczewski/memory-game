@@ -14,8 +14,7 @@ defineProps<TextBarProps>();
 </template>
 <style scoped>
 .text-bar {
-  width: 17.5rem;
-  height: 2rem;
+  width: 100%;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -45,8 +44,6 @@ defineProps<TextBarProps>();
 
 @media (min-width: 48em) {
   .text-bar {
-    width: 34rem;
-    height: 3rem;
     padding-inline: 2rem;
     padding-block: 1.5rem;
   }
