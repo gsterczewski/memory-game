@@ -25,21 +25,22 @@ export class GameEngine {
     this.secondTile!.isMatched = true;
   }
 
-  private evaluateTiles(): Promise<RoundResult> {
+  private async evaluateTiles(): Promise<RoundResult> {
     if (this.firstTile!.getID() === this.secondTile!.getID())
       return Promise.resolve({ score: 0, moves: 0 });
     if (this.firstTile!.getValue() === this.secondTile!.getValue()) {
-      this.markTilesAsMatched();
-      this.markTilesAsNotFlipped();
-      this.reset();
+      await delay(() => {
+        this.markTilesAsMatched();
+        this.markTilesAsNotFlipped();
+        this.reset();
+      }, this.delaySeconds);
       return Promise.resolve({ score: 1, moves: 1 });
     }
-    return delay(() => {
+    await delay(() => {
       this.markTilesAsNotFlipped();
-    }, this.delaySeconds).then(() => {
-      this.reset();
-      return Promise.resolve({ score: 0, moves: 1 });
-    });
+    }, this.delaySeconds);
+    this.reset();
+    return Promise.resolve({ score: 0, moves: 1 });
   }
 
   public async setTile(tile: Tile): Promise<RoundResult> {
