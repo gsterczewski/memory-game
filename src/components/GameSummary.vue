@@ -120,6 +120,7 @@ const caption = computed<string>((): string => {
 }
 .grid {
   display: grid;
+
   grid-template-rows: auto 0.625rem auto 1.5rem auto 1.5rem 3rem 1rem 3rem;
 }
 .grid-item-1 {
@@ -150,6 +151,7 @@ const caption = computed<string>((): string => {
 }
 .summary-content {
   display: grid;
+  grid-template-rows: repeat(2, 3rem);
   row-gap: 0.5rem;
 }
 
@@ -192,6 +194,7 @@ const caption = computed<string>((): string => {
     font-size: 1.125rem;
   }
   .summary-content {
+    grid-template-rows: repeat(2, 4.5rem);
     row-gap: 1rem;
   }
 }
