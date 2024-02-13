@@ -133,7 +133,7 @@ watch(isOver, (isOver) => {
   padding-inline: 1.5rem;
   padding-block: 3vh;
   display: grid;
-  grid-template-rows: auto minmax(3rem, 1fr) auto minmax(3rem, 1fr) auto;
+  grid-template-rows: auto minmax(4rem, 1fr) auto minmax(4rem, 1fr) auto;
   justify-items: center;
 }
 
