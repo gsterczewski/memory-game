@@ -1,12 +1,14 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import GameTileVue from "../GameTile.vue";
+import { GameOptions } from "../../core/game";
 
 const defaultProps = {
   isFlipped: false,
   isMatched: false,
   tileValue: 1,
   tileIndex: 0,
+  theme: "numbers" as GameOptions["theme"],
 };
 let wrapper = shallowMount(GameTileVue, { props: defaultProps });
 let component = wrapper.get("[data-test='tile']");
