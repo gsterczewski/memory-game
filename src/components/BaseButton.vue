@@ -29,6 +29,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   border-radius: 2rem;
   font-weight: bold;
   outline: none;
+  cursor: pointer;
 }
 
 /* SIZES */

@@ -86,6 +86,7 @@ const icon = computed(() => {
   border-radius: 50%;
   background-color: var(--color-neutral-800);
   color: var(--color-neutral-200);
+  cursor: pointer;
 }
 .tile--isMatched {
   background-color: var(--color-neutral-500);
