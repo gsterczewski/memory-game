@@ -72,6 +72,7 @@ watch(isOver, (isOver) => {
       <div class="board-container">
         <GameBoard
           :board="game.getBoard()"
+          :theme="currentOptions.theme"
           :handle-flip-tile="game.selectTile.bind(game)"
         />
       </div>

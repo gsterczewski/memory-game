@@ -2,11 +2,15 @@
 import { computed } from "vue";
 import { Tile } from "../core/tile";
 import GameTile from "./GameTile.vue";
+import { GameOptions } from "../core/game";
 type GameBoardProps = {
   board: Tile[];
+  theme?: GameOptions["theme"];
   handleFlipTile: (index: number) => void;
 };
-const props = defineProps<GameBoardProps>();
+const props = withDefaults(defineProps<GameBoardProps>(), {
+  theme: "numbers",
+});
 const boardGridSize = computed(() => props.board.length);
 </script>
 <template>
@@ -18,6 +22,7 @@ const boardGridSize = computed(() => props.board.length);
       :tileValue="tile.getValue()"
       :is-flipped="tile.isFlipped"
       :is-matched="tile.isMatched"
+      :theme="theme"
       @select-tile="(tileIndex:number) => handleFlipTile(tileIndex)"
     />
   </div>
