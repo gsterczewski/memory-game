@@ -88,9 +88,9 @@ const icon = computed(() => {
   color: var(--color-neutral-200);
 }
 .tile--isMatched {
-  background-color: var(--color-primary);
+  background-color: var(--color-neutral-500);
 }
 .tile--isFlipped {
-  background-color: var(--color-neutral-500);
+  background-color: var(--color-primary);
 }
 </style>
