@@ -66,9 +66,13 @@ const icon = computed(() => {
       'tile--isMatched': isMatched,
     }"
     data-test="tile"
+    :aria-label="`Click to check tile number ${tileIndex + 1}`"
   >
     <div v-if="shouldShowValue">
-      <font-awesome-icon v-if="icon" :icon="icon" />
+      <div v-if="icon">
+        <p class="sr-only">{{ tileValue }}</p>
+        <font-awesome-icon :icon="icon" />
+      </div>
       <span v-else>{{ tileValue }}</span>
     </div>
   </button>
