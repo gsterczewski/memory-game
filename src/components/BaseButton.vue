@@ -22,9 +22,9 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 .button {
   width: var(--width);
   height: var(--height);
+  font-size: var(--fs);
   color: var(--color);
   background-color: var(--background);
-  font-size: var(--fs);
   border: none;
   border-radius: 2rem;
   font-weight: bold;
@@ -57,6 +57,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   .button--normal {
     --width: 9rem;
     --height: 3.25rem;
+    --fs: 1.25rem;
   }
 }
 /* THEMES */
