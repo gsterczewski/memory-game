@@ -6,19 +6,19 @@ This project is a solution to one of the challenges on [Frontend Mentor](https:/
 
 The sole purpose of this project is to improve my coding skills and receive useful feedback. It should not be considered a reference for best practices or an example of how to build production-ready applications.
 
-## 🔗Links
+## 🔗 Links
 
 - [Live view](https://memory-game-gsterczewskis-projects.vercel.app/)
 - [Frontend Mentor Solution](https://www.frontendmentor.io/solutions/memory-game-built-with-vue-and-typescript-vg7CNTjNCI)
 
-## 🛠️Tools used
+## 🛠️ Tools used
 
 - Vue - [The Progressive JavaScript Framework](https://vuejs.org/)
 - Typescript - [JavaScript with syntax for types](https://www.typescriptlang.org/)
 - Vite - [Next Generation Frontend Tooling](https://vitejs.dev/)
 - Vitest - [Next Generation Testing Tooling](https://vitest.dev/)
 
-## 🧠The challenge
+## 🧠 The challenge
 
 The task was to create a memory game. It could be played by up to four players. I received design files and requirements, and was given the freedom to choose the tools to use.
 
