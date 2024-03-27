@@ -131,7 +131,7 @@ watch(isOver, (isOver) => {
   height: 100%;
   max-width: 1100px;
   padding-inline: 1.5rem;
-  padding-block: 3vh;
+  padding-block: 8.8vh;
   display: grid;
   grid-template-rows: auto minmax(4rem, 1fr) auto minmax(4rem, 1fr) auto;
   justify-items: center;
