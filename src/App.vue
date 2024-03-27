@@ -69,13 +69,13 @@ watch(isOver, (isOver) => {
           </template>
         </GameHeader>
       </div>
-      <div class="board-container">
+      <main class="board-container">
         <GameBoard
           :board="game.getBoard()"
           :theme="currentOptions.theme"
           :handle-flip-tile="game.selectTile.bind(game)"
         />
-      </div>
+      </main>
       <div
         class="status-bar-container"
         :class="{ 'status-bar-container--short': currentOptions.players === 1 }"
