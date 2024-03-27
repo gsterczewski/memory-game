@@ -91,6 +91,7 @@ const icon = computed(() => {
   background-color: var(--color-neutral-700);
   color: var(--color-neutral-200);
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 .tile--isMatched {
   background-color: var(--color-neutral-500);
