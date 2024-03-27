@@ -88,7 +88,7 @@ const icon = computed(() => {
   font-weight: bold;
   border: none;
   border-radius: 50%;
-  background-color: var(--color-neutral-800);
+  background-color: var(--color-neutral-700);
   color: var(--color-neutral-200);
   cursor: pointer;
 }
