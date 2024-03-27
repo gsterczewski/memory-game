@@ -156,7 +156,8 @@ watch(isOver, (isOver) => {
 @media (min-width: 48em) {
   .game-screen {
     padding-inline: 2.5rem;
-    padding-block: 8.8vh;
+    padding-block: clamp(24px, 8.8vh, 4.25rem);
+    grid-template-rows: auto 6.5625rem auto 6.5625rem auto;
   }
 }
 </style>
